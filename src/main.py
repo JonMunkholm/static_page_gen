@@ -1,5 +1,14 @@
-from textnode import TextNode
+from textnode import TextNode, TextType
+from leafnode import LeafNode
 
-print(TextNode("This is some anchor text", "link", "https://www.boot.dev"))
+def main():
 
-print("hello world")
+
+
+
+    print(TextNode("This is some anchor text", "link", "https://www.boot.dev"))
+
+    print("hello world")
+
+if __name__ == "__main__":
+    main()
