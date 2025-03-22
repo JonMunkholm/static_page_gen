@@ -1,9 +1,9 @@
 import unittest
 
 from textnode import TextNode, TextType
-from functions import split_nodes_delimiter, text_node_to_html_node, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes
+from node_functions import split_nodes_delimiter, text_node_to_html_node, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes
 
-class TestFunctionsTxtToHTMLNode(unittest.TestCase):
+class TestNodeFunctions(unittest.TestCase):
     def test_node_to_html_node(self):
         node = TextNode("This is a text node", TextType.TEXT)
         html_node = text_node_to_html_node(node)

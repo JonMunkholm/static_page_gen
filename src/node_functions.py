@@ -21,7 +21,6 @@ def text_node_to_html_node(text_node):
                 raise Exception("invalid text type")
 
 
-
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     res = []
     for node in old_nodes:
@@ -48,7 +47,6 @@ def extract_markdown_links(text):
     res = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
 
     return res
-
 
 def split_helper(node, cb, tup_prop_type):
     text = node.text[:]
