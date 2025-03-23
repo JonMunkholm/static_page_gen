@@ -16,6 +16,6 @@ class TestParentNode(unittest.TestCase):
         grandchild_node2 = LeafNode("i", "Malchom")
         grandchild_node3 = LeafNode("p", "Alexander")
         grandchild_node4 = LeafNode("span", "Forgotten child")
-        child_node = ParentNode("span", [grandchild_node])
+        child_node = ParentNode("span", [grandchild_node, grandchild_node2, grandchild_node3, grandchild_node4])
         parent_node = ParentNode("div", [child_node])
         self.assertEqual(parent_node.to_html(),"<div><span><b>grandchild</b><i>Malchom</i><p>Alexander</p><span>Forgotten child</span></span></div>")
