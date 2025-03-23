@@ -19,7 +19,10 @@ class ParentNode(HTIMLNode):
                         if isinstance(child, ParentNode):
                             res = f"{child.to_html()}{make_tree(children[1:])}"
                         else:
-                            res = res + f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
+                            if child.tag:
+                                res = res + f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
+                            else:
+                                res = res + f"{child.value}"
 
                 return f"<{self.tag}>{res}</{self.tag}>"
 

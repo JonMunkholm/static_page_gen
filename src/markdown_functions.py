@@ -55,25 +55,26 @@ def markdown_to_html_node(markdown):
 
     text_list = markdown_to_blocks(markdown)
     res = []
+    nodes = []
     for text in text_list:
         block_type = block_to_block_type(text)
-        nodes = []
-        parent = None
+        text = text.replace("\n"," ")
         match block_type:
             case BlockType.HEADING:
-                nodes = helper_string_nodes(text, "h")
+                nodes = nodes + [helper_string_nodes(text, "h")]
             case BlockType.QUOTE:
-                nodes = helper_string_nodes(text, "blockquote")
+                nodes = nodes + [helper_string_nodes(text, "blockquote")]
             case BlockType.PARAGRAPH:
-                nodes = helper_string_nodes(text, "p")
+                nodes = nodes + [helper_string_nodes(text, "p")]
             case BlockType.CODE:
-                nodes = ParentNode("code")
+                nodes = nodes + [helper_string_nodes(text, "code")]
             case BlockType.UNORDERED_LIST:
                 pass
             case BlockType.ORDERED_LIST:
                 pass
 
 
-        res = res + [nodes]
+    res = res + nodes
         #logic related to parent nodes with children that are parent nodes - need to figuer out
-    return ParentNode("div", res)
+    return ParentNode("div", res).to_html()
+    # return ParentNode("div", [helper_string_nodes(text_list[0], "h")]).to_html()

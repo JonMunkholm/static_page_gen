@@ -55,8 +55,10 @@ class TestMarkdownFunctions(unittest.TestCase):
 
         res = "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>"
         node = markdown_to_html_node(md)
-        html = node.to_html()
-        self.assertEqual(html, res)
+        # html = node.to_html()
+        # self.assertEqual(html, res)
+        self.assertEqual(node, 6)
+
 
     # def test_codeblock(self):
     #     md = """
