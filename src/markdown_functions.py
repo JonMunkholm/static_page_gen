@@ -52,7 +52,7 @@ def helper_string_nodes(text, tag):
 
 
 def markdown_to_html_node(markdown):
-
+    pass
     text_list = markdown_to_blocks(markdown)
     res = []
     nodes = []
@@ -75,6 +75,4 @@ def markdown_to_html_node(markdown):
 
 
     res = res + nodes
-        #logic related to parent nodes with children that are parent nodes - need to figuer out
-    return ParentNode("div", res).to_html()
-    # return ParentNode("div", [helper_string_nodes(text_list[0], "h")]).to_html()
+    return ParentNode("div", res)

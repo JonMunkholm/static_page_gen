@@ -17,13 +17,14 @@ class ParentNode(HTIMLNode):
                 else:
                     for child in children:
                         if isinstance(child, ParentNode):
-                            res = f"{child.to_html()}{make_tree(children[1:])}"
+                            return res + f"{child.to_html()}{make_tree(children[1:])}"
                         else:
                             if child.tag:
-                                res = res + f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
+                                addition = f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
                             else:
-                                res = res + f"{child.value}"
+                                addition = f"{child.value}"
+                        res = res + addition
 
-                return f"<{self.tag}>{res}</{self.tag}>"
+                return res
 
-            return make_tree(self.children)
+            return f"<{self.tag}>{make_tree(self.children)}</{self.tag}>"
