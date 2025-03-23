@@ -10,6 +10,9 @@ class ParentNode(HTIMLNode):
         elif not self.children:
             raise ValueError("Think about the children (Oooohhh Nooooo)!")
         else:
+            #stage empty string and add node string value to string ie. "" + "{node str}" + "{node str}" + ...
+            ##Itterate through child list nodes and add to string (see above) if node in child list is an instance of ParentNode,
+            ##recursively call and return node string and add to staged string (see above).
             def make_tree(children):
                 res = ""
                 if not children:

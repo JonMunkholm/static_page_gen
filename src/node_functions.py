@@ -52,25 +52,23 @@ def split_helper(node, cb, tup_prop_type):
     text = node.text[:]
     items = cb(node.text)
 
+    #next is used as an itterator to find the correct index in a string to split and insert an item
     next = 0
     for item in items:
+        #assign f_str to split string for image or link
+        f_str = ""
+        if tup_prop_type == "link":
+            f_str = f_str + f"[{item[0]}]({item[1]})"
+        else:
+            f_str = f_str + f"![{item[0]}]({item[1]})"
 
-
+        #split string and insert image/link text to zip text and image/link list together
         if next == 0:
-            if tup_prop_type == "link":
-                text = text.split(f"[{item[0]}]({item[1]})")
-            else:
-                text = text.split(f"![{item[0]}]({item[1]})")
-
+            text = text.split(f_str)
             text = text[:1] + [list(item[:])] + text[1:]
 
-
         else:
-            if tup_prop_type == "link":
-                text = text[:next] + text[next].split(f"[{item[0]}]({item[1]})")
-            else:
-                text = text[:next] + text[next].split(f"![{item[0]}]({item[1]})")
-
+            text = text[:next] + text[next].split(f_str)
             text = text[:next + 1] + [list(item[:])] + text[next + 1 :]
 
         next = len(text) - 1

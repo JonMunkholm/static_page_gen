@@ -58,16 +58,87 @@ class TestMarkdownFunctions(unittest.TestCase):
         html = node.to_html()
         self.assertEqual(html, res)
 
+    def test_codeblock(self):
+        md = """
+            ```
+            This is text that _should_ remain
+            the **same** even with inline stuff
+            ```
+            """
 
-    # def test_codeblock(self):
-    #     md = """
-    #         ```
-    #         This is text that _should_ remain
-    #         the **same** even with inline stuff
-    #         ```
-    #         """
+        res = "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, res)
 
-    #     res = "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>"
-    #     node = markdown_to_html_node(md)
-    #     html = node.to_html()
-    #     self.assertEqual(html, res)
+    def test_headings(self):
+        md = [
+            """#Heading One""",
+            """##Heading Two""",
+            """######Heading Six"""
+            ]
+
+        res = [
+            "<div><h1>Heading One</h1></div>",
+            "<div><h2>Heading Two</h2></div>",
+            "<div><h6>Heading Six</h6></div>"
+            ]
+
+        for i in range(len(md)):
+            node = markdown_to_html_node(md[i])
+            html = node.to_html()
+            self.assertEqual(html, res[i])
+
+    def test_ordered_list(self):
+        md = [
+            """
+            1. Thing
+            2. Do
+            3. Words
+            """,
+            """
+            1. First
+            2. Last
+            """,
+            """
+            1. Hello
+            """
+            ]
+
+        res = [
+            "<div><ol><li>Thing</li><li>Do</li><li>Words</li></ol></div>",
+            "<div><ol><li>First</li><li>Last</li></ol></div>",
+            "<div><ol><li>Hello</li></ol></div>"
+            ]
+
+        for i in range(len(md)):
+            node = markdown_to_html_node(md[i])
+            html = node.to_html()
+            self.assertEqual(html, res[i])
+
+    def test_unordered_list(self):
+        md = [
+            """
+            - One
+            - For
+            - All
+            """,
+            """
+            - All
+            - For
+            """,
+            """
+            - One
+            """
+            ]
+
+        res = [
+            "<div><ul><li>One</li><li>For</li><li>All</li></ul></div>",
+            "<div><ul><li>All</li><li>For</li></ul></div>",
+            "<div><ul><li>One</li></ul></div>"
+            ]
+
+        for i in range(len(md)):
+            node = markdown_to_html_node(md[i])
+            html = node.to_html()
+            self.assertEqual(html, res[i])

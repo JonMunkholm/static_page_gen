@@ -1,6 +1,8 @@
 from enum import Enum
 from node_functions import text_to_textnodes, text_node_to_html_node
 from parentnode import ParentNode
+from leafnode import LeafNode
+
 
 class BlockType(Enum):
     PARAGRAPH = "Paragraph"
@@ -33,7 +35,7 @@ def block_to_block_type(block):
                  return BlockType.PARAGRAPH
 
 
-def helper_string_nodes(text, tag):
+def helper_string_text(text, tag):
     textNodes = text_to_textnodes(text)
     HTMLNodes = []
     if len(textNodes) > 1:
@@ -45,33 +47,50 @@ def helper_string_nodes(text, tag):
 
 
     if tag == "h":
-        count = HTMLNodes[0].value.count("#")
-        return ParentNode(f"h{count}", HTMLNodes)
+        count = HTMLNodes.value.count("#")
+        HTMLNodes.value = HTMLNodes.value.replace("#", "")
+        return ParentNode(f"h{count}", [HTMLNodes])
     else:
         return ParentNode(f"{tag}", HTMLNodes)
 
+def helper_string_code_and_list(text, tag):
+    if tag == "code":
+        leaf = LeafNode(tag, text.replace("```", "")[1:])
+        return ParentNode("pre", [leaf])
+    else:
+        items = text.split("\n")
+        HTMLNodes = []
+        for item in items:
+            leaf = LeafNode("li", item[2:].strip())
+            HTMLNodes = HTMLNodes + [leaf]
+        return ParentNode(f"{tag}", HTMLNodes)
+
+
+
+
 
 def markdown_to_html_node(markdown):
-    pass
     text_list = markdown_to_blocks(markdown)
     res = []
     nodes = []
     for text in text_list:
         block_type = block_to_block_type(text)
-        text = text.replace("\n"," ")
         match block_type:
             case BlockType.HEADING:
-                nodes = nodes + [helper_string_nodes(text, "h")]
+                text = text.replace("\n"," ")
+                nodes = nodes + [helper_string_text(text, "h")]
             case BlockType.QUOTE:
-                nodes = nodes + [helper_string_nodes(text, "blockquote")]
+                text = text.replace("\n"," ")
+                nodes = nodes + [helper_string_text(text, "blockquote")]
             case BlockType.PARAGRAPH:
-                nodes = nodes + [helper_string_nodes(text, "p")]
+                text = text.replace("\n"," ")
+                nodes = nodes + [helper_string_text(text, "p")]
             case BlockType.CODE:
-                nodes = nodes + [helper_string_nodes(text, "code")]
+                nodes = nodes + [helper_string_code_and_list(text, "code")]
             case BlockType.UNORDERED_LIST:
-                pass
+                nodes = nodes + [helper_string_code_and_list(text, "ul")]
             case BlockType.ORDERED_LIST:
-                pass
+                nodes = nodes + [helper_string_code_and_list(text, "ol")]
 
 
     res = res + nodes
