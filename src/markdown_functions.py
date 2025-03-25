@@ -34,7 +34,6 @@ def block_to_block_type(block):
             else:
                  return BlockType.PARAGRAPH
 
-
 def helper_string_text(text, tag):
     textNodes = text_to_textnodes(text)
     HTMLNodes = []
@@ -64,10 +63,6 @@ def helper_string_code_and_list(text, tag):
             leaf = LeafNode("li", item[2:].strip())
             HTMLNodes = HTMLNodes + [leaf]
         return ParentNode(f"{tag}", HTMLNodes)
-
-
-
-
 
 def markdown_to_html_node(markdown):
     text_list = markdown_to_blocks(markdown)
