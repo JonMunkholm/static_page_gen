@@ -15,7 +15,6 @@ class BlockType(Enum):
 def markdown_to_blocks(markdown):
     res = ["\n".join(list(map(lambda a: a.strip(), x.strip().split("\n")))) for x in markdown.strip().split("\n\n")]
 
-
     return res
 
 def block_to_block_type(block):
@@ -36,6 +35,7 @@ def block_to_block_type(block):
 
 def helper_string_text(text, tag):
     textNodes = text_to_textnodes(text)
+    print(f"node: {textNodes[0].text}")#################################################################################################
     HTMLNodes = []
     if len(textNodes) > 1:
         for node in textNodes:

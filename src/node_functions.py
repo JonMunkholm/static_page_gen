@@ -90,6 +90,7 @@ def split_nodes_link(old_nodes):
             elif isinstance(text[i], list):
                 new_node = TextNode(text[i][0], TextType.LINK, text[i][1])
             else:
+
                 new_node = TextNode("".join(text), node.text_type, node.url)
                 res = res + [new_node]
                 break
