@@ -49,8 +49,12 @@ def extract_markdown_links(text):
     return res
 
 def split_helper(node, cb, tup_prop_type):
+    if node.text_type == TextType.LINK:
+        return [node.text, node.url]
+
     text = node.text[:]
     items = cb(node.text)
+
 
     #next is used as an itterator to find the correct index in a string to split and insert an item
     next = 0
@@ -73,13 +77,20 @@ def split_helper(node, cb, tup_prop_type):
 
         next = len(text) - 1
 
-    return list(filter(lambda a: a != "", text))
+    if isinstance(text, list):
+        text = list(filter(lambda a: a != "", text))
+    elif isinstance(text, str):
+        text = [text]
+
+    return text
 
 def split_nodes_link(old_nodes):
 
     res = []
-
     for node in old_nodes:
+        if node.text_type == TextType.IMAGE or node.text_type == TextType.LINK:
+            res = res + [node]
+            continue
 
         text = split_helper(node, extract_markdown_links, "link")
 
@@ -90,8 +101,7 @@ def split_nodes_link(old_nodes):
             elif isinstance(text[i], list):
                 new_node = TextNode(text[i][0], TextType.LINK, text[i][1])
             else:
-
-                new_node = TextNode("".join(text), node.text_type, node.url)
+                new_node = TextNode("".join(text[0]), node.text_type, node.url)
                 res = res + [new_node]
                 break
 
@@ -103,6 +113,9 @@ def split_nodes_image(old_nodes):
     res = []
 
     for node in old_nodes:
+        if node.text_type == TextType.IMAGE or node.text_type == TextType.LINK:
+            res = res + [node]
+            continue
 
         text = split_helper(node, extract_markdown_images, "image")
 
@@ -112,6 +125,7 @@ def split_nodes_image(old_nodes):
 
             elif isinstance(text[i], list):
                 new_node = TextNode(text[i][0], TextType.IMAGE, text[i][1])
+
             else:
                 new_node = TextNode("".join(text), node.text_type, node.url)
                 res = res + [new_node]
@@ -119,6 +133,7 @@ def split_nodes_image(old_nodes):
 
             res = res + [new_node]
 
+    # print(f"res: {res}")
     return res
 
 def text_to_textnodes(text):
@@ -126,6 +141,6 @@ def text_to_textnodes(text):
     new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
     new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
     new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
-    new_nodes = split_nodes_image(new_nodes)
-    res = split_nodes_link(new_nodes)
+    new_nodes = split_nodes_link(new_nodes)
+    res = split_nodes_image(new_nodes)
     return res

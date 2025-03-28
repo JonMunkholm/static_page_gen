@@ -18,16 +18,28 @@ class ParentNode(HTIMLNode):
                 if not children:
                     return res
                 else:
-                    for child in children:
-                        if isinstance(child, ParentNode):
-                            return res + f"{child.to_html()}{make_tree(children[1:])}"
-                        else:
-                            if child.tag:
-                                addition = f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
+                    if type(children) == list:
+                        for child in children:
+                            if isinstance(child, ParentNode):
+                                return res + f"{child.to_html()}{make_tree(children[1:])}"
                             else:
-                                addition = f"{child.value}"
+                                if child.tag:
+                                    addition = f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
+                                else:
+                                    addition = f"{child.value}"
+
+                            res = res + addition
+
+                    else:
+                        if children.tag:
+                            addition = f"<{children.tag}>" + f"{children.value}" + f"</{children.tag}>"
+                        else:
+                            addition = f"{children.value}"
+
                         res = res + addition
 
+
+                    print(f"stuck in a well: {res}")
                 return res
 
             return f"<{self.tag}>{make_tree(self.children)}</{self.tag}>"

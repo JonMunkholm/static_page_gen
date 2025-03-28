@@ -35,7 +35,6 @@ def block_to_block_type(block):
 
 def helper_string_text(text, tag):
     textNodes = text_to_textnodes(text)
-    print(f"node: {textNodes[0].text}")#################################################################################################
     HTMLNodes = []
     if len(textNodes) > 1:
         for node in textNodes:
