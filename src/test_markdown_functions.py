@@ -92,7 +92,7 @@ class TestMarkdownFunctions(unittest.TestCase):
     def test_ordered_list(self):
         md = [
             """
-            1. Thing
+            1. _Thing_
             2. Do
             3. Words
             """,
@@ -106,7 +106,7 @@ class TestMarkdownFunctions(unittest.TestCase):
             ]
 
         res = [
-            "<div><ol><li>Thing</li><li>Do</li><li>Words</li></ol></div>",
+            "<div><ol><li><i>Thing</i></li><li>Do</li><li>Words</li></ol></div>",
             "<div><ol><li>First</li><li>Last</li></ol></div>",
             "<div><ol><li>Hello</li></ol></div>"
             ]
@@ -119,6 +119,9 @@ class TestMarkdownFunctions(unittest.TestCase):
     def test_unordered_list(self):
         md = [
             """
+            - Disney _didn't ruin it_ (okay, but Amazon might have)
+            """,
+            """
             - One
             - For
             - All
@@ -126,16 +129,14 @@ class TestMarkdownFunctions(unittest.TestCase):
             """
             - All
             - For
-            """,
             """
-            - One
-            """
+
             ]
 
         res = [
+            "<div><ul><li>Disney <i>didn't ruin it</i> (okay, but Amazon might have)</li></ul></div>",
             "<div><ul><li>One</li><li>For</li><li>All</li></ul></div>",
-            "<div><ul><li>All</li><li>For</li></ul></div>",
-            "<div><ul><li>One</li></ul></div>"
+            "<div><ul><li>All</li><li>For</li></ul></div>"
             ]
 
         for i in range(len(md)):

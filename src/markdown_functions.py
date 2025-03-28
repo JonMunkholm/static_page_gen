@@ -2,6 +2,7 @@ from enum import Enum
 from node_functions import text_to_textnodes, text_node_to_html_node
 from parentnode import ParentNode
 from leafnode import LeafNode
+from textnode import TextType
 
 
 class BlockType(Enum):
@@ -35,6 +36,7 @@ def block_to_block_type(block):
 
 def helper_string_text(text, tag):
     textNodes = text_to_textnodes(text)
+
     HTMLNodes = []
     if len(textNodes) > 1:
         for node in textNodes:
@@ -45,23 +47,52 @@ def helper_string_text(text, tag):
 
 
     if tag == "h":
+
         count = HTMLNodes.value.count("#")
-        HTMLNodes.value = HTMLNodes.value.replace("#", "")
+        HTMLNodes.value = HTMLNodes.value.replace("#", "").strip()
         return ParentNode(f"h{count}", [HTMLNodes])
+
+    elif tag == "blockquote":
+
+        HTMLNodes.value = HTMLNodes.value.replace(">", "\n")
+        return ParentNode(f"{tag}", HTMLNodes)
+
     else:
         return ParentNode(f"{tag}", HTMLNodes)
 
 def helper_string_code_and_list(text, tag):
     if tag == "code":
+
         leaf = LeafNode(tag, text.replace("```", "")[1:])
         return ParentNode("pre", [leaf])
-    else:
+
+    elif tag == "ol":
+
         items = text.split("\n")
         HTMLNodes = []
+
         for item in items:
-            leaf = LeafNode("li", item[2:].strip())
-            HTMLNodes = HTMLNodes + [leaf]
+
+            textNodes = list(filter(lambda a: a.text, text_to_textnodes(item[2:].strip())))
+
+            for node in textNodes:
+
+                if node.text_type != TextType.TEXT:
+
+                    node = text_node_to_html_node(node)
+                    node = ParentNode("li", node)
+
+                else:
+
+                    node = LeafNode("li", node.text)
+
+                HTMLNodes = HTMLNodes + [node]
+
         return ParentNode(f"{tag}", HTMLNodes)
+
+    else:
+        print(f"help me: {text}")
+
 
 def markdown_to_html_node(markdown):
     text_list = markdown_to_blocks(markdown)
