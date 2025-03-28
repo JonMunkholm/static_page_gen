@@ -97,13 +97,13 @@ def split_nodes_link(old_nodes):
         for i in range(len(text)):
             if not isinstance(text[i], list) and len(text[i]) > 1:
                 new_node = TextNode(text[i], node.text_type)
+                print(f"something to help me: {new_node}")
 
             elif isinstance(text[i], list):
                 new_node = TextNode(text[i][0], TextType.LINK, text[i][1])
             else:
-                new_node = TextNode("".join(text[0]), node.text_type, node.url)
-                res = res + [new_node]
-                break
+                new_node = TextNode("".join(text[i]), node.text_type, node.url)
+
 
             res = res + [new_node]
 

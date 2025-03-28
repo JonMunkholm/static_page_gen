@@ -24,7 +24,14 @@ class ParentNode(HTIMLNode):
                                 return f"{child.to_html()}{make_tree(children[1:])}"
                             else:
                                 if child.tag:
-                                    addition = f"<{child.tag}>" + f"{child.value}" + f"</{child.tag}>"
+                                    if child.tag == "a":
+                                        child_tag_open = f"a href = {child.props}"
+                                    elif child.tag == "img":
+                                        child_tag_open = f"img src = {child.props}"
+                                    else:
+                                        child_tag_open = child.tag
+
+                                    addition = f"<{child_tag_open}>" + f"{child.value}" + f"</{child.tag}>"
                                 else:
                                     addition = f"{child.value}"
 
@@ -32,7 +39,15 @@ class ParentNode(HTIMLNode):
 
                     else:
                         if children.tag:
-                            addition = f"<{children.tag}>{children.value}</{children.tag}>"
+                            if children.tag:
+                                    if children.tag == "a":
+                                        children_tag_open = f"a href = {children.props}"
+                                    elif children.tag == "img":
+                                        children_tag_open = f"img src = {children.props}"
+                                    else:
+                                        children_tag_open = children.tag
+
+                                    addition = f"<{children_tag_open}>" + f"{children.value}" + f"</{children.tag}>"
                         else:
                             addition = f"{children.value}"
 

@@ -54,7 +54,7 @@ def helper_string_text(text, tag):
 
     elif tag == "blockquote":
 
-        HTMLNodes.value = HTMLNodes.value.replace(">", "\n")
+        HTMLNodes.value = HTMLNodes.value[1:].strip().replace(">", "\n")
         return ParentNode(f"{tag}", HTMLNodes)
 
     else:
@@ -95,30 +95,6 @@ def helper_string_code_and_list(text, tag):
             HTMLNodes = HTMLNodes + [node]
 
         return ParentNode(f"{tag}", HTMLNodes)
-
-    # else:
-    #     items = text.split("\n")
-    #     HTMLNodes = []
-
-    #     for item in items:
-    #         textNodes = list(filter(lambda a: a.text, text_to_textnodes(item[2:].strip())))
-
-    #         for node in textNodes:
-    #                 print(f"i need somebody: {node}")
-
-    #                 if node.text_type != TextType.TEXT:
-
-    #                     node = text_node_to_html_node(node)
-    #                     # node = ParentNode("li", node)
-
-    #                 else:
-
-    #                     node = LeafNode("", node.text)
-
-    #                 HTMLNodes = HTMLNodes + [node]
-    #         HTMLNodes = [ParentNode("li", HTMLNodes)]
-    #     return ParentNode(f"{tag}", HTMLNodes)
-
 
 def markdown_to_html_node(markdown):
     text_list = markdown_to_blocks(markdown)
