@@ -60,38 +60,64 @@ def helper_string_text(text, tag):
     else:
         return ParentNode(f"{tag}", HTMLNodes)
 
+def make_list_item(nodes):
+
+    textNodes = list(filter(lambda a: a.text, text_to_textnodes(nodes[2:].strip())))
+    HTMLNodes = []
+
+    for node in textNodes:
+
+        if node.text_type != TextType.TEXT:
+
+            node = text_node_to_html_node(node)
+
+        else:
+
+                node = LeafNode("", node.text)
+
+        HTMLNodes = HTMLNodes + [node]
+
+    return ParentNode("li", HTMLNodes)
+
 def helper_string_code_and_list(text, tag):
     if tag == "code":
 
         leaf = LeafNode(tag, text.replace("```", "")[1:])
         return ParentNode("pre", [leaf])
 
-    elif tag == "ol":
+    else:
 
         items = text.split("\n")
         HTMLNodes = []
 
         for item in items:
-
-            textNodes = list(filter(lambda a: a.text, text_to_textnodes(item[2:].strip())))
-
-            for node in textNodes:
-
-                if node.text_type != TextType.TEXT:
-
-                    node = text_node_to_html_node(node)
-                    node = ParentNode("li", node)
-
-                else:
-
-                    node = LeafNode("li", node.text)
-
-                HTMLNodes = HTMLNodes + [node]
+            node = make_list_item(item)
+            HTMLNodes = HTMLNodes + [node]
 
         return ParentNode(f"{tag}", HTMLNodes)
 
-    else:
-        print(f"help me: {text}")
+    # else:
+    #     items = text.split("\n")
+    #     HTMLNodes = []
+
+    #     for item in items:
+    #         textNodes = list(filter(lambda a: a.text, text_to_textnodes(item[2:].strip())))
+
+    #         for node in textNodes:
+    #                 print(f"i need somebody: {node}")
+
+    #                 if node.text_type != TextType.TEXT:
+
+    #                     node = text_node_to_html_node(node)
+    #                     # node = ParentNode("li", node)
+
+    #                 else:
+
+    #                     node = LeafNode("", node.text)
+
+    #                 HTMLNodes = HTMLNodes + [node]
+    #         HTMLNodes = [ParentNode("li", HTMLNodes)]
+    #     return ParentNode(f"{tag}", HTMLNodes)
 
 
 def markdown_to_html_node(markdown):
