@@ -115,7 +115,6 @@ def static_to_docs():
     static_rel = "static"
     template_rel = "template.html"
     content_rel = "content"
-
     basepath = '/'
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
