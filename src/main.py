@@ -108,7 +108,7 @@ def generate_page(content_dir, template_dir, docs_dir, basepath):
 
 
 
-
+#directory and root path
 docs_dir = "./docs"
 static_dir = "./static"
 template_dir = "./template.html"
