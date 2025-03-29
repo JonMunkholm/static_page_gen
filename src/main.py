@@ -112,29 +112,26 @@ def generate_page(from_path, template_path, dest_path):
 
 
 def static_to_docs():
-    docs_rel = "docs"
-    static_rel = "static"
-    template_rel = "template.html"
-    content_rel = "content"
+    docs_rel = "/docs"
+    static_rel = "/static"
+    template_rel = "/template.html"
+    content_rel = "/content"
 
-    basepath = os.path.abspath(".")
+
     #github hosting use
-    # basepath = '/'
-    # if len(sys.argv) > 1:
-    #     basepath = sys.argv[1]
+    basepath = '/'
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+
 
     shutil.rmtree(os.path.join(basepath, docs_rel), True)
-    os.makedirs(os.path.abspath(os.path.join(basepath, docs_rel)))
-    print(f"this is working? - {os.path.relpath(os.path.join(basepath, docs_rel))}")
+    if not os.path.exists(os.path.join(basepath, docs_rel)):
+        os.makedirs(os.path.join(basepath, docs_rel))
 
     docs_path = os.path.join(basepath, docs_rel)
     static_path = os.path.join(basepath, static_rel)
     content_rel_path = os.path.join(basepath, content_rel)
     template_path = os.path.join(basepath, template_rel)
-    print(f"docs: {docs_path}")
-    print(f"docs: {static_path}")
-    print(f"docs: {content_rel_path}")
-    print(f"docs: {template_path}")
 
 
     copy_tree(static_path, docs_path)
