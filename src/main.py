@@ -117,28 +117,24 @@ def static_to_docs():
     template_rel = "template.html"
     content_rel = "content"
 
-    #local repo use
-    basepath = os.path.abspath("..")
-    print(f"help local: {basepath}")
-
-
+    basepath = os.path.abspath(".")
     #github hosting use
-    basepath = basepath + '/'
-    if len(sys.argv) > 1:
-        basepath = basepath + sys.argv[1]
-
+    # basepath = '/'
+    # if len(sys.argv) > 1:
+    #     basepath = sys.argv[1]
 
     shutil.rmtree(os.path.join(basepath, docs_rel), True)
-    os.mkdir(os.path.join(basepath, docs_rel))
+    os.makedirs(os.path.abspath(os.path.join(basepath, docs_rel)))
+    print(f"this is working? - {os.path.relpath(os.path.join(basepath, docs_rel))}")
 
     docs_path = os.path.join(basepath, docs_rel)
     static_path = os.path.join(basepath, static_rel)
     content_rel_path = os.path.join(basepath, content_rel)
     template_path = os.path.join(basepath, template_rel)
-    # print(f"docs: {docs_path}")
-    # print(f"docs: {static_path}")
-    # print(f"docs: {content_rel_path}")
-    # print(f"docs: {template_path}")
+    print(f"docs: {docs_path}")
+    print(f"docs: {static_path}")
+    print(f"docs: {content_rel_path}")
+    print(f"docs: {template_path}")
 
 
     copy_tree(static_path, docs_path)
