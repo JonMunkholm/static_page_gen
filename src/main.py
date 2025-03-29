@@ -5,23 +5,35 @@ from markdown_functions import markdown_to_blocks, markdown_to_html_node
 
 def copy_tree(src, des):
 
-    def copy(sub_path = ""):
+    if not os.path.exists(des):
+            os.mkdir(des)
 
-        path_string = os.path.join(src, sub_path)
-        items = os.listdir(path_string)
-        for item in items:
+    for filename in os.listdir(src):
+        from_path = os.path.join(src, filename)
+        dest_path = os.path.join(des, filename)
+        print(f" * {from_path} -> {dest_path}")
+        if os.path.isfile(from_path):
+            shutil.copy(from_path, dest_path)
+        else:
+            copy_tree(from_path, dest_path)
 
-            if os.path.isdir(os.path.join(path_string, item)):
+    # def copy(sub_path = ""):
 
-                os.mkdir(os.path.join(des, sub_path, item))
-                copy(sub_path + f"{item}/")
+    #     path_string = os.path.join(src, sub_path)
+    #     items = os.listdir(path_string)
+    #     for item in items:
 
-            else:
+    #         if os.path.isdir(os.path.join(path_string, item)):
 
-                shutil.copy(os.path.join(path_string, item),os.path.join(des, sub_path))
+    #             os.mkdir(os.path.join(des, sub_path, item))
+    #             copy(sub_path + f"{item}/")
+
+    #         else:
+
+    #             shutil.copy(os.path.join(path_string, item),os.path.join(des, sub_path))
 
 
-    return copy()
+    # return copy()
 
 def extract_title(text):
     f_title = ""
