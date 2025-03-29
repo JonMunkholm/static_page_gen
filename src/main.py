@@ -112,10 +112,10 @@ def generate_page(from_path, template_path, dest_path):
 
 
 def static_to_docs():
-    docs_rel = "/docs"
-    static_rel = "/static"
-    template_rel = "/template.html"
-    content_rel = "/content"
+    docs_rel = "docs"
+    static_rel = "static"
+    template_rel = "template.html"
+    content_rel = "content"
 
 
     #github hosting use
