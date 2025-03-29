@@ -25,9 +25,9 @@ class ParentNode(HTIMLNode):
                             else:
                                 if child.tag:
                                     if child.tag == "a":
-                                        child_tag_open = f"a href = {child.props}"
+                                        child_tag_open = f"a href = '{child.props}'"
                                     elif child.tag == "img":
-                                        child_tag_open = f"img src = {child.props}"
+                                        child_tag_open = f"img src = '{child.props}'"
                                     else:
                                         child_tag_open = child.tag
 
@@ -41,9 +41,9 @@ class ParentNode(HTIMLNode):
                         if children.tag:
                             if children.tag:
                                     if children.tag == "a":
-                                        children_tag_open = f"a href = {children.props}"
+                                        children_tag_open = f"a href = '{children.props}'"
                                     elif children.tag == "img":
-                                        children_tag_open = f"img src = {children.props}"
+                                        children_tag_open = f"img src = '{children.props}'"
                                     else:
                                         children_tag_open = children.tag
 

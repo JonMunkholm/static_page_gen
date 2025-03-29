@@ -97,7 +97,6 @@ def split_nodes_link(old_nodes):
         for i in range(len(text)):
             if not isinstance(text[i], list) and len(text[i]) > 1:
                 new_node = TextNode(text[i], node.text_type)
-                print(f"something to help me: {new_node}")
 
             elif isinstance(text[i], list):
                 new_node = TextNode(text[i][0], TextType.LINK, text[i][1])
@@ -133,7 +132,6 @@ def split_nodes_image(old_nodes):
 
             res = res + [new_node]
 
-    # print(f"res: {res}")
     return res
 
 def text_to_textnodes(text):

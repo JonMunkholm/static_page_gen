@@ -37,6 +37,42 @@ def extract_title(text):
     else:
         raise Exception("Invalid file - markdown file, does not have a title.")
 
+
+def generate_pages_recursive(file, temp, path_string):
+    if file.endswith(".md"):
+
+        file_path = os.path.join(path_string, file)
+        file_text = open(file_path).read()
+
+        HTML_content = markdown_to_html_node(file_text).to_html()
+        title = extract_title(file_text)
+
+        template_text = open(temp).read()
+
+        new_content = template_text.replace("{{ Title }}", title)
+        new_content = new_content.replace("{{ Content }}", HTML_content)
+
+        file_name = f"{os.path.basename(file_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
+
+
+        # Create a new file
+        with open(file_path, "w") as file:
+            file.write(new_content)
+
+        # Rename the file
+        os.rename(file_path, os.path.join(path_string, file_name))
+
+        # Verify the rename
+        if os.path.exists(os.path.join(path_string, file_name)):
+            print("File renamed successfully!")
+        else:
+            print("File rename failed.")
+
+    else:
+        return
+
+
+
 def md_to_HTML(des, temp):
 
     def update_file(sub_path = ""):
@@ -45,7 +81,6 @@ def md_to_HTML(des, temp):
         items = os.listdir(path_string)
 
         for item in items:
-
             if os.path.isdir(os.path.join(path_string, item)):
 
                 new_string = sub_path + f"{item}/"
@@ -53,38 +88,7 @@ def md_to_HTML(des, temp):
 
             else:
 
-                if item.endswith(".md"):
-
-                    file_path = os.path.join(path_string, item)
-                    file_text = open(file_path).read()
-
-                    HTML_content = markdown_to_html_node(file_text).to_html()
-                    title = extract_title(file_text)
-
-                    template_text = open(temp).read()
-
-                    new_content = template_text.replace("{{ Title }}", title)
-                    new_content = new_content.replace("{{ Content }}", HTML_content)
-
-                    file_name = f"{os.path.basename(file_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
-
-
-                    # Create a new file
-                    with open(file_path, "w") as file:
-                        file.write(new_content)
-
-                    # Rename the file
-                    os.rename(file_path, os.path.join(path_string, file_name))
-
-                    # Verify the rename
-                    if os.path.exists(os.path.join(path_string, file_name)):
-                        print("File renamed successfully!")
-                    else:
-                        print("File rename failed.")
-
-                else:
-                    continue
-
+                generate_pages_recursive(item, temp, path_string)
 
 
 

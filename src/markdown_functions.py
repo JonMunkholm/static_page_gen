@@ -48,9 +48,20 @@ def helper_string_text(text, tag):
 
     if tag == "h":
 
-        count = HTMLNodes.value.count("#")
-        HTMLNodes.value = HTMLNodes.value.replace("#", "").strip()
-        return ParentNode(f"h{count}", [HTMLNodes])
+        if isinstance(HTMLNodes, list):
+
+            for node in HTMLNodes:
+                if node.value.startswith("#"):
+                    count = node.value.count("#")
+                    node.value = node.value.replace("#", "").strip()
+
+        else:
+
+            if HTMLNodes.value.startswith("#"):
+                    count = HTMLNodes.value.count("#")
+                    HTMLNodes.value = HTMLNodes.value.replace("#", "").strip()
+
+        return ParentNode(f"h{count}", HTMLNodes)
 
     elif tag == "blockquote":
 
