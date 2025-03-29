@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from textnode import TextNode, TextType
 from leafnode import LeafNode
 from markdown_functions import markdown_to_blocks, markdown_to_html_node
@@ -109,21 +110,25 @@ def generate_page(from_path, template_path, dest_path):
 
 
 
-def static_to_public():
-    public_rel = "./public"
-    static_rel = "./static"
-    template_rel = "./template.html"
-    content_rel = "./content"
+def static_to_docs():
+    docs_rel = "docs"
+    static_rel = "static"
+    template_rel = "template.html"
+    content_rel = "content"
 
-    shutil.rmtree(os.path.abspath(public_rel), True)
-    os.mkdir(os.path.join(os.path.abspath("."), "public"))
+    basepath = '/'
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
 
-    public_path = os.path.abspath(public_rel)
-    static_path = os.path.abspath(static_rel)
-    content_rel_path = os.path.abspath(content_rel)
-    template_path = os.path.abspath(template_rel)
-    copy_tree(static_path, public_path)
-    generate_page(content_rel, template_path, public_path)
+    shutil.rmtree(os.path.join(basepath, docs_rel), True)
+    os.mkdir(os.path.join(basepath, docs_rel))
+
+    docs_path = os.path.join(basepath, docs_rel)
+    static_path = os.path.join(basepath, static_rel)
+    content_rel_path = os.path.join(basepath, content_rel)
+    template_path = os.path.join(basepath, template_rel)
+    copy_tree(static_path, docs_path)
+    generate_page(content_rel, template_path, docs_path)
 
 
 
@@ -132,7 +137,7 @@ def static_to_public():
 
 def main():
 
-    static_to_public()
+    static_to_docs()
 
 
     # print(TextNode("This is some anchor text", "link", "https://www.boot.dev"))
