@@ -118,10 +118,10 @@ def static_to_docs():
     template_rel = "template.html"
     content_rel = "content"
 
-    basepath = os.path.abspath(".")
-    # basepath = '/'
-    # if len(sys.argv) > 1:
-    #     basepath = sys.argv[1]
+    # basepath = os.path.abspath(".")
+    basepath = '/'
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
 
     shutil.rmtree(os.path.join(basepath, docs_rel), True)
     os.mkdir(os.path.join(basepath, docs_rel))
