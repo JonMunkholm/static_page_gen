@@ -124,6 +124,7 @@ def static_to_docs():
     basepath = '/'
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
+    print(f"help: {basepath}")
 
     shutil.rmtree(os.path.join(basepath, docs_rel), True)
     os.mkdir(os.path.join(basepath, docs_rel))
