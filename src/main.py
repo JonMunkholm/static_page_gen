@@ -123,6 +123,7 @@ def static_to_docs():
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
 
+    print(f"help me: {basepath}")
 
     shutil.rmtree(docs_dir, True)
     if not os.path.exists(docs_dir):
