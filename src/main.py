@@ -37,7 +37,7 @@ def extract_title(text):
         raise Exception("Invalid file - markdown file, does not have a title.")
 
 
-def generate_pages_recursive(file, temp, path_string):
+def generate_pages_recursive(file, temp, path_string, base):
 
     if file.endswith(".md"):
 
@@ -51,8 +51,8 @@ def generate_pages_recursive(file, temp, path_string):
 
         new_content = template_text.replace("{{ Title }}", title)
         new_content = new_content.replace("{{ Content }}", HTML_content)
-        new_content = new_content.replace("href= '/", 'href= "' + file_path)
-        new_content = new_content.replace("src= '/", 'src= "' + file_path)
+        new_content = new_content.replace("href= '/", 'href= "' + base)
+        new_content = new_content.replace("src= '/", 'src= "' + base)
 
         file_name = f"{os.path.basename(file_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
 
@@ -75,7 +75,7 @@ def generate_pages_recursive(file, temp, path_string):
 
 
 
-def md_to_HTML(des, temp):
+def md_to_HTML(des, temp, base):
 
     def update_file(sub_path = ""):
 
@@ -90,7 +90,7 @@ def md_to_HTML(des, temp):
 
             else:
 
-                generate_pages_recursive(item, temp, path_string)
+                generate_pages_recursive(item, temp, path_string, base)
 
 
 
