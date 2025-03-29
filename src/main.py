@@ -52,6 +52,8 @@ def generate_pages_recursive(file, temp, path_string):
 
         new_content = template_text.replace("{{ Title }}", title)
         new_content = new_content.replace("{{ Content }}", HTML_content)
+        new_content = template_text.replace("href= '/'", title)
+        new_content = template_text.replace("src= '/'", title)
 
         file_name = f"{os.path.basename(file_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
 
@@ -115,6 +117,7 @@ def static_to_docs():
     static_rel = "static"
     template_rel = "template.html"
     content_rel = "content"
+
     basepath = '/'
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
