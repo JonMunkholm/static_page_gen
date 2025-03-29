@@ -120,11 +120,9 @@ def static_to_docs():
     #local repo use
     # basepath = os.path.abspath(".")
 
-
     #github hosting use
     basepath = sys.argv[0]
 
-    print(f"something to help me: {basepath}")
     shutil.rmtree(os.path.join(basepath, docs_rel), True)
     os.mkdir(os.path.join(basepath, docs_rel))
 
