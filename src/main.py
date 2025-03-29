@@ -118,15 +118,13 @@ def static_to_docs():
     content_rel = "content"
 
     #local repo use
-    basepath = os.path.abspath(".")
-    print(f"what are you: {basepath}")
+    # basepath = os.path.abspath(".")
 
     #github hosting use
     basepath = '/'
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
 
-    print(f"something to help me: {basepath}")
     shutil.rmtree(os.path.join(basepath, docs_rel), True)
     os.mkdir(os.path.join(basepath, docs_rel))
 
