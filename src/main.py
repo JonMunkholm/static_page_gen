@@ -97,45 +97,40 @@ def md_to_HTML(des, temp):
     return update_file()
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(content_dir, template_dir, docs_dir, basepath):
     print("Generating page from from_path to dest_path using template_path")
 
-    copy_tree(from_path, dest_path)
+    copy_tree(content_dir, docs_dir)
 
-    md_to_HTML(dest_path, template_path)
-
-
+    md_to_HTML(docs_dir, template_dir)
 
 
 
 
 
+
+docs_dir = "./docs"
+static_dir = "./static"
+template_dir = "./template.html"
+content_dir = "./content"
+default_basepath = "/"
 
 def static_to_docs():
-    docs_rel = "docs"
-    static_rel = "static"
-    template_rel = "template.html"
-    content_rel = "content"
 
 
     #github hosting use
-    basepath = '/'
+    basepath = default_basepath
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
 
 
-    shutil.rmtree(os.path.join(basepath, docs_rel), True)
-    if not os.path.exists(os.path.join(basepath, docs_rel)):
-        os.makedirs(os.path.join(basepath, docs_rel))
-
-    docs_path = os.path.join(basepath, docs_rel)
-    static_path = os.path.join(basepath, static_rel)
-    content_rel_path = os.path.join(basepath, content_rel)
-    template_path = os.path.join(basepath, template_rel)
+    shutil.rmtree(docs_dir, True)
+    if not os.path.exists(docs_dir):
+        os.mkdir(docs_dir)
 
 
-    copy_tree(static_path, docs_path)
-    generate_page(content_rel_path, template_path, docs_path)
+    copy_tree(static_dir, docs_dir)
+    generate_page(content_dir, template_dir, docs_dir, basepath)
 
 
 
