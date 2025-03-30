@@ -7,7 +7,7 @@ def copy_tree(src, des):
 
     def copy(sub_path = ""):
 
-        path_string = os.path.join(src, sub_path)
+        path_string = src + f"/{sub_path}"
         items = os.listdir(path_string)
         for item in items:
 
@@ -53,7 +53,6 @@ def generate_pages_recursive(file, temp, path_string, base):
         new_content = new_content.replace("{{ Content }}", HTML_content)
         new_content = new_content.replace("href= '/", 'href= "' + base)
         new_content = new_content.replace("src= '/", 'src= "' + base)
-
         file_name = f"{os.path.basename(file_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
 
 
@@ -100,9 +99,9 @@ def md_to_HTML(des, temp, base):
 def generate_page(content_dir, template_dir, docs_dir, basepath):
     print("Generating page from from_path to dest_path using template_path")
 
+    print(f"help me: {basepath}")
     copy_tree(content_dir, docs_dir)
-
-    md_to_HTML(docs_dir, template_dir)
+    md_to_HTML(docs_dir, template_dir, basepath)
 
 
 
@@ -123,7 +122,6 @@ def static_to_docs():
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
 
-    print(f"help me: {basepath}")
 
     shutil.rmtree(docs_dir, True)
     if not os.path.exists(docs_dir):
