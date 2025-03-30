@@ -7,18 +7,18 @@ def copy_tree(src, des):
 
     def copy(sub_path = ""):
 
-        path_string = src + f"/{sub_path}"
-        items = os.listdir(path_string)
+        src_string = src + f"/{sub_path}"
+        items = os.listdir(src_string)
         for item in items:
 
-            if os.path.isdir(os.path.join(path_string, item)):
+            if os.path.isdir(src_string + f"/{item}"):
 
-                os.mkdir(os.path.join(des, sub_path, item))
-                copy(sub_path + f"{item}/")
+                os.mkdir(des + sub_path + f"/{item}")
+                copy(sub_path + f"/{item}/")
 
             else:
 
-                shutil.copy(os.path.join(path_string, item),os.path.join(des, sub_path))
+                shutil.copy(src_string + f"/{item}", des + sub_path)
 
 
     return copy()
