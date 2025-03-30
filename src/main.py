@@ -4,24 +4,16 @@ from leafnode import LeafNode
 from markdown_functions import markdown_to_blocks, markdown_to_html_node
 
 def copy_tree(src, des):
+    if not os.path.exists(des):
+        os.mkdir(des)
 
-    def copy(sub_path = ""):
-
-        src_string = src + f"/{sub_path}"
-        items = os.listdir(src_string)
-        for item in items:
-
-            if os.path.isdir(src_string + f"/{item}"):
-
-                os.makedirs(des + sub_path + f"/{item}", exist_ok=True)
-                copy(sub_path + f"/{item}/")
-
-            else:
-                print(f"what if my file path: {src_string + f"{item}", des + sub_path}")
-                shutil.copy(src_string + f"{item}", des + sub_path)
-
-
-    return copy()
+    for item in os.listdir(src):
+        src_path = os.path.join(src, item)
+        des_path = os.path.join(des, item)
+        if os.path.isfile(src_path):
+            shutil.copy(src_path, des_path)
+        else:
+            copy_tree(src_path, des_path)
 
 def extract_title(text):
     f_title = ""
