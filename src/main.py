@@ -17,8 +17,8 @@ def copy_tree(src, des):
                 copy(sub_path + f"/{item}/")
 
             else:
-
-                shutil.copy(src_string + f"/{item}", des + sub_path)
+                print(f"what if my file path: {src_string + f"{item}", des + sub_path}")
+                shutil.copy(src_string + f"{item}", des + sub_path)
 
 
     return copy()
