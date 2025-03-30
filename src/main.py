@@ -13,7 +13,7 @@ def copy_tree(src, des):
 
             if os.path.isdir(src_string + f"/{item}"):
 
-                os.mkdir(des + sub_path + f"/{item}")
+                os.makedirs(des + sub_path + f"/{item}", exist_ok=True)
                 copy(sub_path + f"/{item}/")
 
             else:
@@ -125,7 +125,7 @@ def static_to_docs():
 
     shutil.rmtree(docs_dir, True)
     if not os.path.exists(docs_dir):
-        os.mkdir(docs_dir)
+        os.makedirs(docs_dir, exist_ok=True)
 
 
     copy_tree(static_dir, docs_dir)
