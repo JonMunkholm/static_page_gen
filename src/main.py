@@ -1,4 +1,5 @@
 import os, shutil, sys
+from pathlib import Path
 from textnode import TextNode, TextType
 from leafnode import LeafNode
 from markdown_functions import markdown_to_blocks, markdown_to_html_node
@@ -30,71 +31,43 @@ def extract_title(text):
         raise Exception("Invalid file - markdown file, does not have a title.")
 
 
-def generate_pages_recursive(src, temp, des, base):
-###something wrong with this function +++++++++++++++++++++++++++++++
-    if src.endswith(".md"):
-
-        src_path = os.path.join(des, src)
-        src_text = open(src_path).read()
-
-        HTML_content = markdown_to_html_node(src_text).to_html()
-        title = extract_title(src_text)
-
-        template_text = open(temp).read()
-
-        new_content = template_text.replace("{{ Title }}", title)
-        new_content = new_content.replace("{{ Content }}", HTML_content)
-        template = new_content.replace('href="/', 'href="' + base)
-        template = new_content.replace('src="/', 'src="' + base)
-        src_name = f"{os.path.basename(src_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
-
-
-        # Create a new src
-        with open(src_path, "w") as src:
-            src.write(new_content)
-
-        # Rename the src
-        os.rename(src_path, os.path.join(des, src_name))
-
-        # Verify the rename
-        if os.path.exists(os.path.join(des, src_name)):
-            print("src renamed successfully!")
-        else:
-            print("src rename failed.")
-
-    else:
-        return
-
-
-
-def md_to_HTML(des, temp, base):
-
-    def update_file(sub_path = ""):
-
-        path_string = os.path.join(des, sub_path)
-        items = os.listdir(path_string)
-
-        for item in items:
-            if os.path.isdir(os.path.join(path_string, item)):
-
-                new_string = sub_path + f"{item}/"
-                update_file(new_string)
-
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
+    for filename in os.listdir(dir_path_content):
+            from_path = os.path.join(dir_path_content, filename)
+            dest_path = os.path.join(dest_dir_path, filename)
+            if os.path.isfile(from_path):
+                dest_path = Path(dest_path).with_suffix(".html")
+                generate_page(from_path, template_path, dest_path, basepath)
             else:
-
-                generate_pages_recursive(item, temp, path_string, base)
-
+                generate_pages_recursive(from_path, template_path, dest_path, basepath)
 
 
-    return update_file()
-
-
-def generate_page(content_dir, template_dir, docs_dir, basepath):
+def generate_page(from_path, template_path, dest_path, basepath):
     print("Generating page from from_path to dest_path using template_path")
 
-    print(f"help me: {basepath}")
-    copy_tree(content_dir, docs_dir)
-    md_to_HTML(docs_dir, template_dir, basepath)
+    from_file = open(from_path, "r")
+    markdown_content = from_file.read()
+    from_file.close()
+
+    template_file = open(template_path, "r")
+    template = template_file.read()
+    template_file.close()
+
+    node = markdown_to_html_node(markdown_content)
+    html = node.to_html()
+
+    title = extract_title(markdown_content)
+    template = template.replace("{{ Title }}", title)
+    template = template.replace("{{ Content }}", html)
+    template = template.replace('href="/', 'href="' + basepath)
+    template = template.replace('src="/', 'src="' + basepath)
+
+    dest_dir_path = os.path.dirname(dest_path)
+    if dest_dir_path != "":
+        os.makedirs(dest_dir_path, exist_ok=True)
+    to_file = open(dest_path, "w")
+    to_file.write(template)
+
 
 
 
@@ -107,7 +80,8 @@ template_dir = "./template.html"
 content_dir = "./content"
 default_basepath = "/"
 
-def static_to_docs():
+
+def main():
 
     basepath = default_basepath
     if len(sys.argv) > 1:
@@ -117,16 +91,7 @@ def static_to_docs():
         shutil.rmtree(docs_dir)
 
     copy_tree(static_dir, docs_dir)
-    generate_page(content_dir, template_dir, docs_dir, basepath)
-
-
-
-
-
-
-def main():
-
-    static_to_docs()
+    generate_pages_recursive(content_dir, template_dir, docs_dir, basepath)
 
 
     # print(TextNode("This is some anchor text", "link", "https://www.boot.dev"))
