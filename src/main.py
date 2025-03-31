@@ -4,6 +4,7 @@ from leafnode import LeafNode
 from markdown_functions import markdown_to_blocks, markdown_to_html_node
 
 def copy_tree(src, des):
+
     if not os.path.exists(des):
         os.mkdir(des)
 
@@ -29,37 +30,37 @@ def extract_title(text):
         raise Exception("Invalid file - markdown file, does not have a title.")
 
 
-def generate_pages_recursive(file, temp, path_string, base):
+def generate_pages_recursive(src, temp, des, base):
+###something wrong with this function +++++++++++++++++++++++++++++++
+    if src.endswith(".md"):
 
-    if file.endswith(".md"):
+        src_path = os.path.join(des, src)
+        src_text = open(src_path).read()
 
-        file_path = os.path.join(path_string, file)
-        file_text = open(file_path).read()
-
-        HTML_content = markdown_to_html_node(file_text).to_html()
-        title = extract_title(file_text)
+        HTML_content = markdown_to_html_node(src_text).to_html()
+        title = extract_title(src_text)
 
         template_text = open(temp).read()
 
         new_content = template_text.replace("{{ Title }}", title)
         new_content = new_content.replace("{{ Content }}", HTML_content)
-        new_content = new_content.replace("href= '/", 'href= "' + base)
-        new_content = new_content.replace("src= '/", 'src= "' + base)
-        file_name = f"{os.path.basename(file_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
+        template = new_content.replace('href="/', 'href="' + base)
+        template = new_content.replace('src="/', 'src="' + base)
+        src_name = f"{os.path.basename(src_path).split(".")[0]}.{os.path.basename(temp).split(".")[1]}"
 
 
-        # Create a new file
-        with open(file_path, "w") as file:
-            file.write(new_content)
+        # Create a new src
+        with open(src_path, "w") as src:
+            src.write(new_content)
 
-        # Rename the file
-        os.rename(file_path, os.path.join(path_string, file_name))
+        # Rename the src
+        os.rename(src_path, os.path.join(des, src_name))
 
         # Verify the rename
-        if os.path.exists(os.path.join(path_string, file_name)):
-            print("File renamed successfully!")
+        if os.path.exists(os.path.join(des, src_name)):
+            print("src renamed successfully!")
         else:
-            print("File rename failed.")
+            print("src rename failed.")
 
     else:
         return
@@ -114,11 +115,8 @@ def static_to_docs():
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
 
-
-    shutil.rmtree(docs_dir, True)
-    if not os.path.exists(docs_dir):
-        os.makedirs(docs_dir, exist_ok=True)
-
+    if os.path.exists(docs_dir):
+        shutil.rmtree(docs_dir)
 
     copy_tree(static_dir, docs_dir)
     generate_page(content_dir, template_dir, docs_dir, basepath)
