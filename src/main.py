@@ -45,7 +45,6 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
 def generate_page(from_path, template_path, dest_path, basepath):
     print("Generating page from from_path to dest_path using template_path")
 
-    print(f" * {from_path} {template_path} -> {dest_path}")
     from_file = open(from_path, "r")
     markdown_content = from_file.read()
     from_file.close()
@@ -58,10 +57,13 @@ def generate_page(from_path, template_path, dest_path, basepath):
     html = node.to_html()
 
     title = extract_title(markdown_content)
+
+    html = html.replace("href = '/", "href = '" + basepath)
+    html = html.replace("src = '/", "src = '" + basepath)
+
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}", html)
     template = template.replace('href="/', 'href="' + basepath)
-    template = template.replace('src="/', 'src="' + basepath)
 
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
@@ -92,12 +94,7 @@ def main():
         shutil.rmtree(docs_dir)
 
     copy_tree(static_dir, docs_dir)
-    generate_page(content_dir, template_dir, docs_dir, basepath)
-
-
-    # print(TextNode("This is some anchor text", "link", "https://www.boot.dev"))
-
-    # print("hello world")
+    generate_pages_recursive(content_dir, template_dir, docs_dir, basepath)
 
 if __name__ == "__main__":
     main()
