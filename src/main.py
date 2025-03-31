@@ -4,7 +4,7 @@ from leafnode import LeafNode
 from markdown_functions import markdown_to_blocks, markdown_to_html_node
 
 def copy_tree(src, des):
-
+    print(f"mapping file path: {src}")
     if not os.path.exists(des):
         os.mkdir(des)
 
@@ -109,8 +109,6 @@ default_basepath = "/"
 
 def static_to_docs():
 
-
-    #github hosting use
     basepath = default_basepath
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
@@ -119,7 +117,7 @@ def static_to_docs():
         shutil.rmtree(docs_dir)
 
     copy_tree(static_dir, docs_dir)
-    generate_page(content_dir, template_dir, docs_dir, basepath)
+    # generate_page(content_dir, template_dir, docs_dir, basepath)
 
 
 
