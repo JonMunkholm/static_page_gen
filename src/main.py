@@ -58,8 +58,8 @@ def generate_page(from_path, template_path, dest_path, basepath):
 
     title = extract_title(markdown_content)
     template = template.replace("{{ Title }}", title)
+    content = template.replace("href = '/", "href = '" + basepath)
     template = template.replace("{{ Content }}", html)
-    template = template.replace("href = '/", "href = '" + basepath)
     template = template.replace("src = '/", "src = '" + basepath)
 
     dest_dir_path = os.path.dirname(dest_path)
