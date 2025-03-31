@@ -117,7 +117,7 @@ def static_to_docs():
         shutil.rmtree(docs_dir)
 
     copy_tree(static_dir, docs_dir)
-    # generate_page(content_dir, template_dir, docs_dir, basepath)
+    generate_page(content_dir, template_dir, docs_dir, basepath)
 
 
 
